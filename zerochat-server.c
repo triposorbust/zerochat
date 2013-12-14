@@ -9,8 +9,6 @@ void *publish (void *context)
 
   int rc = zmq_bind (publisher, "tcp://*:5556");
   assert (rc == 0);
-  rc = zmq_bind (publisher, "ipc://messenger.ipc");
-  assert (rc == 0);
   rc = zmq_bind (pulley, "inproc://crosstalk");
   assert (rc == 0);
 

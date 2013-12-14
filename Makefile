@@ -5,13 +5,13 @@ CCLIBS = -lzmq -pthread
 all: server client version
 
 server: zerochat-server.c zerochat.h
-	@ $(CC) $(CCFLAGS) $< $(CCLIBS) -o $@
+	@ $(CC) -o $@ $(CCFLAGS) $< $(CCLIBS)
 
 client: zerochat-client.c zerochat.h
-	@ $(CC) $(CCFLAGS) $< $(CCLIBS) -o $@
+	@ $(CC) -o $@ $(CCFLAGS) $< $(CCLIBS)
 
 version: zmq-version.c
-	@ $(CC) $(CCFLAGS) $^ $(CCLIBS) -o $@
+	@ $(CC) -o $@ $(CCFLAGS) $^ $(CCLIBS)
 
 .PHONY: clean
 clean:
