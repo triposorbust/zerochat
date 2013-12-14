@@ -4,7 +4,9 @@ Friday Night Hack!
 A client/server chat program
 ----------------------------
 
-Built over zero-MQ. Obviously this is not "save" C. But it is C! And it does work!
+Built over zero-MQ. Obviously this is not "safe" C. But it is C! And it does work!
+
+Currently the server ports are hardcoded to 5556 and 5558.
 
 
 Authors
