@@ -16,6 +16,7 @@ void *publish (void *context)
 
   while (1) {
     char *string = s_recv (pulley);
+    printf ("%s\n", string);
     s_send (publisher, string);
   }
 
