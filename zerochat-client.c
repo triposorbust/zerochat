@@ -3,12 +3,15 @@
 #endif
 
 static char BUFFER [2048];
+
 static char IDENTITY [128];
+static char PUSHTO [128];
+static char SUBTO [128];
 
 void *subscribe (void *context)
 {
   void *subscriber = zmq_socket (context, ZMQ_SUB);
-  int rc = zmq_connect (subscriber, "tcp://localhost:5556");
+  int rc = zmq_connect (subscriber, SUBTO);
   assert (rc == 0);
   rc = zmq_setsockopt (subscriber, ZMQ_SUBSCRIBE, "", 0);
   assert (rc == 0);
@@ -26,7 +29,7 @@ void *subscribe (void *context)
 void *push (void *context)
 {
   void *push = zmq_socket (context, ZMQ_PUSH);
-  zmq_connect (push, "tcp://localhost:5558");
+  zmq_connect (push, PUSHTO);
 
   while (1) {
     sprintf (BUFFER, "%s: ", IDENTITY);
@@ -38,23 +41,25 @@ void *push (void *context)
   pthread_exit (NULL);
 }
 
-void setid ()
+void setstring (char *buffer, int size, const char *prompt)
 {
   int i = 0;
   char c;
-  printf ("Welcome. Please select a username: ");
+  printf ("%s", prompt);
   for (;;) {
     c = getchar();
-    if (c == '\n' || i == 127)
+    if (c == '\n' || i >= size-1)
       break;
-    IDENTITY [i++] = c;
+    buffer [i++] = c;
   }
 }
 
 int main (void)
 {
   void *context = zmq_ctx_new ();
-  setid();
+  setstring(IDENTITY, 128, "Welcome! Please choose a username: ");
+  setstring(PUSHTO, 128, "Publication socket: ");
+  setstring(SUBTO, 128, "Subscription socket: ");
 
   int rc;
   pthread_attr_t attr;
