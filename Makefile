@@ -1,17 +1,18 @@
 CC = gcc
-CCFLAGS = -Wall -I/usr/local/include -L/usr/local/lib -lzmq
+CCFLAGS = -Wall -I/usr/local/include -L/usr/local/lib
+CCLIBS = -lzmq -pthread
 
 all: server client version
 
 server: zerochat-server.c zerochat.h
-	@ $(CC) $(CCFLAGS) -o $@ $<
+	@ $(CC) $(CCFLAGS) $< $(CCLIBS) -o $@
 
 client: zerochat-client.c zerochat.h
-	@ $(CC) $(CCFLAGS) -o $@ $<
+	@ $(CC) $(CCFLAGS) $< $(CCLIBS) -o $@
 
-version: zeromq-version.c
-	@ $(CC) $(CCFLAGS) -o $@ $^
+version: zmq-version.c
+	@ $(CC) $(CCFLAGS) $^ $(CCLIBS) -o $@
 
 .PHONY: clean
-clean: server client version
-	@ rm -f $?
+clean:
+	@ rm -f server client version
